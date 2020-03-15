@@ -32,3 +32,4 @@ Route::apiResources([
 
 Route::get('/api/elecciones/activas', 'EleccionController@activas');
 Route::get('/api/elecciones/inactivas', 'EleccionController@inactivas');
+Route::put('/api/elecciones/setinactive/{id}', 'EleccionController@setinactive');

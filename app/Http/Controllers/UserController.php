@@ -55,7 +55,7 @@ class UserController extends Controller
                 $data = array(
                     'status' => 'success',
                     'code' => 200,
-                    'message' => 'El usuario ha creado correctamente',
+                    'message' => 'El usuario se ha creado correctamente',
                     'user' => $user
                 );
             }
@@ -170,14 +170,14 @@ class UserController extends Controller
                 'message' => 'Error al subir imagen.'
             );
         }else {
-            $img_name = time().$img->getClientOriginalName();
-            \Storage::disk('users')->put($img_name, \File::get($img));
+            $image_name = time().$img->getClientOriginalName();
+            \Storage::disk('users')->put($image_name, \File::get($img));
 
         //Devolver resultado
             $data = array(
                 'code' => 200,
                 'status' => 'success',
-                'img' => $img
+                'img' => $image_name
             );
         }
         return \response()->json($data, $data['code']);
@@ -188,7 +188,7 @@ class UserController extends Controller
         $isset = \Storage::disk('users')->exists($filename);
 
         //Enviar resultado
-        if (condition) {
+        if ($isset) {
             $file = \Storage::disk('users')->get($filename);
             return new Response($file, 200);
         }else {

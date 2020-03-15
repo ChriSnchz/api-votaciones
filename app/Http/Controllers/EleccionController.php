@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class EleccionController extends Controller
 {
     public function __construct(){
-        $this->middleware('api.auth', ['exept'=>['index','show', 'activas']]);
+        $this->middleware('api.auth', ['only'=>['store','update','setinactive']]);
     }
     /**
      * Display a listing of the resource.
@@ -44,7 +44,7 @@ class EleccionController extends Controller
         if (!empty($params_array)) {
             //Validar datos
             $validate = \Validator::make($params_array, [
-                'nomre' => 'required',
+                'nombre' => 'required',
                 'fecha_inicio' => 'required',
                 'fecha_fin' => 'required',
                 'hora_inicio' => 'required',
@@ -56,11 +56,16 @@ class EleccionController extends Controller
                 $data = [
                     'code' => 400,
                     'status' => 'error',
-                    'message' => 'Los datos no son correctos.'
+                    'message' => 'Los datos no han sido guardados.'
                 ];
             }else {
                 $eleccion = new Eleccion();
-                $eleccion->name=$params_array['nombre'];
+                $eleccion->nombre=$params_array['nombre'];
+                $eleccion->fecha_inicio=$params_array['fecha_inicio'];
+                $eleccion->fecha_fin=$params_array['fecha_fin'];
+                $eleccion->hora_inicio=$params_array['hora_inicio'];
+                $eleccion->hora_fin=$params_array['hora_fin'];
+                $eleccion->descripcion=$params_array['descripcion'];
                 $eleccion->save();
 
                 $data = [
@@ -179,6 +184,17 @@ class EleccionController extends Controller
             'code' => 200,
             'status' => 'success',
             'elecciones' => $elecciones
+        ]);
+    }
+
+    public function setinactive($id)
+    {
+        $affected = DB::update('update elecciones set estado = 0 where id_eleccion = :id', ['id' => $id]);
+
+        return \response()->json([
+            'code' => 200,
+            'status' => 'success',
+            'affected' => $affected
         ]);
     }
 }
