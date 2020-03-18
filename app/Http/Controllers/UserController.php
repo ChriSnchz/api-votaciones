@@ -125,11 +125,11 @@ class UserController extends Controller
                 'nombre' => 'required|alpha',
                 'apellido_paterno' => 'required|alpha',
                 'apellido_materno' => 'required|alpha',
-                'password' => 'required',
             ]);
 
             //Quitar campos que no se actualizaran
             unset($params_array['role']);
+            unset($params_array['password']);
 
             //Actualizar usuario en db
             $user_update = User::where('email', $user->sub)->update($params_array);

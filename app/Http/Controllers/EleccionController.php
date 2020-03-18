@@ -7,11 +7,20 @@ use Illuminate\Http\Response;
 use \App\Eleccion;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Helpers\JwtAuth;
 
 class EleccionController extends Controller
 {
     public function __construct(){
         $this->middleware('api.auth', ['only'=>['store','update','setinactive']]);
+    }
+
+    public function isAdmin(Request $request){
+        $jwtAuth = new JwtAuth();
+        $token = $request->header('Authorization', null);
+        $user = $jwtAuth->checkToken($token, true);
+        
+        print_r($user);
     }
     /**
      * Display a listing of the resource.

@@ -23,6 +23,8 @@ Route::post('/api/user/upload', 'UserController@upload')->middleware(ApiAuthMidd
 Route::get('/api/user/avatar/{filename}', 'UserController@getImage');
 Route::get('/api/user/detail/{email}', 'UserController@detail');
 
+Route::get('/api/eleccion/isAdmin', 'EleccionController@isAdmin');
+
 //Rutas del controlador de elecciones
 Route::apiResources([
     '/api/eleccion' => 'EleccionController',
