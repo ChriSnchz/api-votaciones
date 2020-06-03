@@ -15,13 +15,6 @@ class EleccionController extends Controller
         $this->middleware('api.auth', ['only'=>['store','update','setinactive']]);
     }
 
-    public function isAdmin(Request $request){
-        $jwtAuth = new JwtAuth();
-        $token = $request->header('Authorization', null);
-        $user = $jwtAuth->checkToken($token, true);
-        
-        print_r($user);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -145,7 +138,7 @@ class EleccionController extends Controller
                 'descripcion' => 'required'
             ]);
 
-            //Unset
+            //Quitar lo que no se va a actualizar
             unset($params_array['id']);
             unset($params_array['estado']);
 
@@ -205,5 +198,9 @@ class EleccionController extends Controller
             'status' => 'success',
             'affected' => $affected
         ]);
+    }
+
+    public function candidatos($id_eleccion){
+        return $candidatos = Eleccion::with('candidatos')->where('id_eleccion', $id_eleccion)->get();
     }
 }
